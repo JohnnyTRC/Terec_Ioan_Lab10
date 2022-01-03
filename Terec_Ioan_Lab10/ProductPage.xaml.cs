@@ -19,6 +19,7 @@ namespace Terec_Ioan_Lab10
             InitializeComponent();
             sl = slist;
         }
+
         async void OnSaveButtonClicked(object sender, EventArgs e)
         {
             var product = (Product)BindingContext;
@@ -36,6 +37,7 @@ namespace Terec_Ioan_Lab10
             base.OnAppearing();
             listView.ItemsSource = await App.Database.GetProductsAsync();
         }
+
         async void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
 

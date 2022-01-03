@@ -6,7 +6,7 @@ using SQLiteNetExtensions.Attributes;
 
 namespace Terec_Ioan_Lab10.Models
 {
-    class Product
+  public class Product
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }

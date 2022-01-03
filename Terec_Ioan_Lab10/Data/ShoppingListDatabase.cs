@@ -8,18 +8,20 @@ using System.Collections;
 
 namespace Terec_Ioan_Lab10.Data
 {
-    
-        public class ShoppingListDatabase
+
+    public class ShoppingListDatabase
+    {
+        readonly SQLiteAsyncConnection _database;
+        public ShoppingListDatabase(string dbPath)
         {
-            readonly SQLiteAsyncConnection _database;
-            public ShoppingListDatabase(string dbPath)
-            {
-                _database = new SQLiteAsyncConnection(dbPath);
-                _database.CreateTableAsync<ShopList>().Wait();
+            _database = new SQLiteAsyncConnection(dbPath);
+            _database.CreateTableAsync<ShopList>().Wait();
             _database.CreateTableAsync<Product>().Wait();
             _database.CreateTableAsync<ListProduct>().Wait();
+
         }
-        internal Task<int> SaveProductAsync(Product product)
+
+        public Task<int> SaveProductAsync(Product product)
         {
             if (product.ID != 0)
             {
@@ -30,40 +32,41 @@ namespace Terec_Ioan_Lab10.Data
                 return _database.InsertAsync(product);
             }
         }
-        internal Task<int> DeleteProductAsync(Product product)
+        public Task<int> DeleteProductAsync(Product product)
         {
             return _database.DeleteAsync(product);
         }
-        internal Task<List<Product>> GetProductsAsync()
+        public Task<List<Product>> GetProductsAsync()
         {
             return _database.Table<Product>().ToListAsync();
         }
         public Task<List<ShopList>> GetShopListsAsync()
+        {
+            return _database.Table<ShopList>().ToListAsync();
+        }
+        public Task<ShopList> GetShopListAsync(int id)
+        {
+            return _database.Table<ShopList>()
+            .Where(i => i.ID == id)
+           .FirstOrDefaultAsync();
+        }
+        public Task<int> SaveShopListAsync(ShopList slist)
+        {
+            if (slist.ID != 0)
             {
-                return _database.Table<ShopList>().ToListAsync();
+                return _database.UpdateAsync(slist);
             }
-            public Task<ShopList> GetShopListAsync(int id)
+            else
             {
-                return _database.Table<ShopList>()
-                .Where(i => i.ID == id)
-               .FirstOrDefaultAsync();
+                return _database.InsertAsync(slist);
             }
-            public Task<int> SaveShopListAsync(ShopList slist)
-            {
-                if (slist.ID != 0)
-                {
-                    return _database.UpdateAsync(slist);
-                }
-                else
-                {
-                    return _database.InsertAsync(slist);
-                }
-            }
-            public Task<int> DeleteShopListAsync(ShopList slist)
-            {
-                return _database.DeleteAsync(slist);
-            }
-        internal Task<int> SaveListProductAsync(ListProduct listp)
+        }
+        public Task<int> DeleteShopListAsync(ShopList slist)
+        {
+            return _database.DeleteAsync(slist);
+        }
+
+        public Task<int> SaveListProductAsync(ListProduct listp)
         {
             if (listp.ID != 0)
             {
@@ -74,7 +77,7 @@ namespace Terec_Ioan_Lab10.Data
                 return _database.InsertAsync(listp);
             }
         }
-        internal Task<List<Product>> GetListProductsAsync(int shoplistid)
+        public Task<List<Product>> GetListProductsAsync(int shoplistid)
         {
             return _database.QueryAsync<Product>(
             "select P.ID, P.Description from Product P"
@@ -82,7 +85,6 @@ namespace Terec_Ioan_Lab10.Data
             + " on P.ID = LP.ProductID where LP.ShopListID = ?",
             shoplistid);
         }
-
     }
-    }
+}
 

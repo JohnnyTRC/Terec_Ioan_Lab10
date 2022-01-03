@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Terec_Ioan_Lab10.Models;
@@ -18,6 +17,7 @@ namespace Terec_Ioan_Lab10
         {
             InitializeComponent();
         }
+
         async void OnSaveButtonClicked(object sender, EventArgs e)
         {
             var slist = (ShopList)BindingContext;
@@ -31,6 +31,7 @@ namespace Terec_Ioan_Lab10
             await App.Database.DeleteShopListAsync(slist);
             await Navigation.PopAsync();
         }
+
         async void OnChooseButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new ProductPage((ShopList)
@@ -40,6 +41,7 @@ namespace Terec_Ioan_Lab10
             });
 
         }
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();

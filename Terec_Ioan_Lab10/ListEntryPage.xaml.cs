@@ -16,6 +16,7 @@ namespace Terec_Ioan_Lab10
         {
             InitializeComponent();
         }
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -28,7 +29,6 @@ namespace Terec_Ioan_Lab10
                 BindingContext = new ShopList()
             });
         }
-
         async void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem != null)
@@ -40,4 +40,5 @@ namespace Terec_Ioan_Lab10
             }
         }
     }
+
 }
